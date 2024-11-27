@@ -13,7 +13,7 @@
         <Button Text="Load Users"
                 Command="{Binding LoadUserCommand}"/>
         
-        <ListView ItemsSource="{Binding Users}">
+        <ListView ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
@@ -42,9 +42,11 @@
         <Button Text="Add User"
                 Command="{Binding AddUserCommand}"/>
         <Button Text="Delete User"
-                />
+                Command="{Binding DeleteUserCommand}"/>
+            <Button Text="Update User"
+         Command="{Binding UpdateUserCommand}"/>
 
 
-    </VerticalStackLayout>
+        </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

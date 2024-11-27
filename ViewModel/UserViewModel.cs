@@ -15,6 +15,18 @@ namespace Module08.ViewModel
         private readonly UserService _userService;
         public ObservableCollection<User> Users { get; set; }
 
+        private User _selectedUser;
+        public User SelectedUser
+        {
+            get =>_selectedUser;
+            set
+            {
+                _selectedUser = value;
+                OnPropertyChanged();
+                UpdateEntryField();
+            }
+        }
+
         private string _nameInput;
         public string NameInput 
         { 
@@ -48,16 +60,41 @@ namespace Module08.ViewModel
             }
         }
 
+        private void ClearInput()
+        {
+            NameInput = string.Empty;
+            GenderInput = string.Empty;
+            ContactNoInput = string.Empty;
+        }
+
+        private void UpdateEntryField()
+        {
+            if (SelectedUser != null)
+            {
+                NameInput = SelectedUser.Name;
+                GenderInput = SelectedUser.Gender;
+                ContactNoInput = SelectedUser.ContactNo;
+            }
+            else
+            {
+                ClearInput();
+            }
+        }
         public UserViewModel()
         {
             _userService = new UserService();
             Users = new ObservableCollection<User>();
             LoadUserCommand = new Command(async () => await LoadUsers());
             AddUserCommand = new Command(async () => await AddUser());
+            DeleteUserCommand = new Command(async () => await DeleteUser());
+            UpdateUserCommand = new Command(async () => await UpdateUser());
+
         }
 
         public ICommand LoadUserCommand { get; }
         public ICommand AddUserCommand { get; }
+        public ICommand DeleteUserCommand { get; }
+        public ICommand UpdateUserCommand { get; }
 
         private async Task LoadUsers()
         {
@@ -89,6 +126,28 @@ namespace Module08.ViewModel
                 {
                     await LoadUsers();
                 }
+            }
+        }
+
+        private async Task DeleteUser()
+        {
+            if(SelectedUser != null)
+            {
+                var result = await _userService.DeleteUsersAsync(SelectedUser.ID);
+                await LoadUsers();
+            }
+        }
+
+        private async Task UpdateUser()
+        {
+            if (SelectedUser != null) 
+            {
+                SelectedUser.Name = NameInput;
+                SelectedUser.Gender = GenderInput;
+                SelectedUser.ContactNo = ContactNoInput;
+
+                var result = await _userService.UpdateUsersAsync(SelectedUser);
+                await LoadUsers();
             }
         }
 

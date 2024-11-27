@@ -44,7 +44,7 @@ namespace Module08.Services
         }
         
         //Delete User
-        public async Task<string> DeleteUsersAsync(User userId)
+        public async Task<string> DeleteUsersAsync(int userId)
         {
             var response =
                 await _httpClient.PostAsJsonAsync($"{BaseUrl}delete_user.php", new { id = userId });
