@@ -11,7 +11,7 @@ namespace Module08.Services
      public class UserService
     {
         private readonly HttpClient _httpClient;
-        private const string BaseUrl = "http://localhost/pdc50";
+        private const string BaseUrl = "http://localhost/pdc50/";
 
         public UserService()
         {
@@ -20,8 +20,9 @@ namespace Module08.Services
 
         public async Task<List<User>>GetUserAsync()
             {
-            var response = await _httpClient.GetFromJsonAsync <List<User>>($"{BaseUrl}get_user.php");
-            return response ?? new List<User> ();
+            var response = 
+                await _httpClient.GetFromJsonAsync <List<User>>($"{BaseUrl}get_user.php");
+            return response ?? new List<User>();
             }
     }
 }
